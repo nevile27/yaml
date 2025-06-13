@@ -1,0 +1,20 @@
+---
+- name: Create startup.txt with "hello world !" content
+  hosts: all
+  gather_facts: yes
+  become: yes
+
+  tasks:
+
+    - name: Set target path based on OS
+      set_fact:
+        startup_file_path: "{{ ansible_env.HOME }}/startup.txt"
+
+    - name: Create startup.txt with 'hello world !'
+      copy:
+        dest: "{{ startup_file_path }}"
+        content: |
+          hello world !
+        owner: "{{ ansible_user | default('root') }}"
+        group: "{{ ansible_user | default('root') }}"
+        mode: '0644'
